@@ -19,7 +19,7 @@ como el siguiente ejemplo:
 ```yaml
 url: https://login.educamos.sm/
 form: user-login-form
-login_user: ************@educa.madrid.org
+login_user: ************
 login_pass: ************
 ```
 

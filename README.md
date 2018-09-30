@@ -1,4 +1,4 @@
-**SM Educamos** ofrece a los profesores unos recursos que solo están
+**SM Educamos - Savia digital** ofrece a los profesores unos recursos que solo están
 disponibles de manera online (tras autenticación) y que son de difícil
 descarga.
 
@@ -24,13 +24,13 @@ login_pass: ************
 ```
 
 La `url` es la dirección donde se encuentra el formulario de logeo
-para entrar en *SM Educamos*. `form` es el `id` del formulario `html`
+para entrar en *SM Educamos - Savia digital*. `form` es el `id` del formulario `html`
 a rellenar para entrar en el portal.
 
 El resto de campos son los valores del formulario que queremos
 sobreescribir para hacer `login`.
 
-Como la web de *SM Educamos* cambia de vez en cuando, si el script no
+Como la web de *SM Educamos - Savia digital* cambia de vez en cuando, si el script no
 funciona hay que mirar con un inspector de códgio html (por [ejemplo](firefox.png) en
 `firefox`) cual es el `id` actual del formulario de logeo y cual es el
 `name` de los campos para usuario y contraseña, a fin de rescribir

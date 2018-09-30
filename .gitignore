@@ -1,0 +1,5 @@
+*.html
+config.yml
+out/*
+!out/m/theme.css
+!out/m/MathJax*

@@ -32,3 +32,27 @@ div.sm-exercise-number span {
   margin-top: 25px;
   margin-bottom: 25px;
 }
+
+div.sm-exercise-number {
+  cursor: pointer;
+}
+div.exercise.pshow div.sm-exercise-number span {
+  background-color: blue !important;
+}
+@media print {
+  .phide {
+    display: none;
+  }
+  div.config {
+    display: none;
+  }
+  div.exercise {
+    display: none;
+  }
+  div.exercise.pshow {
+    display: block;
+  }
+  div.sm-exercise-number {
+    background-color: transparent !important;
+  }
+}

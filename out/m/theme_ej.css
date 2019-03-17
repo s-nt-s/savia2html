@@ -1,0 +1,34 @@
+div.sm-content {
+    margin: 10px !important;
+}
+div.sm-content > div.block {
+    padding-bottom: 0px !important;
+}
+.sm-comp-teco-js-exercise-answer {
+  display: none;
+}
+.sm-exercise-number {
+    float: left;
+    margin-top: -6px;
+    width: 35px;
+}
+div.sm-exercise-number span {
+  font-family: Noto Sans,sans-serif;
+  font-weight: 700;
+  border-radius: 50%;
+  display: block;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  width: 35px;
+  border: 1px solid black;
+}
+.exercise .question {
+    margin-top: 0;
+    margin-left: 45px;
+    margin-right: 20px;
+}
+.exercise {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}

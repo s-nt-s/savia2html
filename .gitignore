@@ -2,5 +2,6 @@
 config.yml
 out/*
 *_out/*
-!out/m/theme.css
+!out/m/*.css
+!out/m/*.js
 !out/m/MathJax*

@@ -90,45 +90,45 @@ def get_text(soup, select):
 
 def get_tpt(title):
     soup = bs4.BeautifulSoup('''
-	<!DOCTYPE html>
-	<html lang="es">
-		<head>
-			<title>%s</title>
-			<meta charset="utf-8"/>
-            <!--script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML"></script-->
-            <script type="text/javascript" async src="m/MathJax-2.7.2/MathJax.js?config=TeX-AMS_CHTML"></script>
-            <script type="text/x-mathjax-config">
-              MathJax.Hub.Config({
-                jax: ["input/TeX","output/CommonHTML"],
-                messageStyle: "none",
-                showMathMenu: false,
-                tex2jax: {
-                  inlineMath: [['$','$'], ['\\\\(','\\\\)']]
-                },
-                TeX: {
-                  extensions: ['autoload-all.js'],
-                  unicode: {
-                    fonts: "STIXGeneral, 'Arial Unicode MS'"
-                  }
-                },
-                CommonHTML: {
-                  scale: 100,
-                  matchFontHeight: false,
-                  mtextFontInherit: true,
-                  undefinedFamily: "serif"
-                }
-              });
-            </script>
-            <link href="m/theme.css" rel="stylesheet" type="text/css">
-		</head>
-		<body>
-        <div id="netex-sm-interface" class="netex-sm-interface">
-        <div id="netex-sm-subject" class="sm-subject mat_act_blue orange-lines" touch-action="pan-y">
-        </div>
-        </div>
-		</body>
-	</html>
-	''' % (title)
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<title>%s</title>
+		<meta charset="utf-8"/>
+        <!--script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML"></script-->
+        <script type="text/javascript" async src="m/MathJax-2.7.2/MathJax.js?config=TeX-AMS_CHTML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            jax: ["input/TeX","output/CommonHTML"],
+            messageStyle: "none",
+            showMathMenu: false,
+            tex2jax: {
+              inlineMath: [['$','$'], ['\\\\(','\\\\)']]
+            },
+            TeX: {
+              extensions: ['autoload-all.js'],
+              unicode: {
+                fonts: "STIXGeneral, 'Arial Unicode MS'"
+              }
+            },
+            CommonHTML: {
+              scale: 100,
+              matchFontHeight: false,
+              mtextFontInherit: true,
+              undefinedFamily: "serif"
+            }
+          });
+        </script>
+        <link href="m/theme.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+    <div id="netex-sm-interface" class="netex-sm-interface">
+    <div id="netex-sm-subject" class="sm-subject mat_act_blue orange-lines" touch-action="pan-y">
+    </div>
+    </div>
+	</body>
+</html>
+	'''.strip() % (title)
         , 'lxml')
     return soup
 

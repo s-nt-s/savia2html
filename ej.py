@@ -7,7 +7,8 @@ import sys
 import re
 #|Problemas para resolver
 re_remove = re.compile(r"^\s*(Ejercicios para practicar|Actividades para pensar más|Encuentra el error)\s*$")
-re_trim = re.compile(r'\s*\(<span class="color2">[●○]+</span>\s*\)\s*</p>')
+re_difi1 = re.compile(r'^\s*[●○]{3}\s*$')
+re_difi2 = re.compile(r'\(\s*<span class="dificultad">[●○]{3}</span>\s*\)')
 heads = ["h1", "h2", "h3", "h5", "h6"]
 
 def get_soup(h):
@@ -116,6 +117,18 @@ for h in sorted(glob("out/*_-_*.html")):
         n = n.get_text().strip()
         add_class(e, "e"+n)
 
+    for s in body.findAll("span", text=re_difi1):
+        p = s.previous_sibling
+        n = s.next_sibling
+        if not p or not n:
+            continue
+        if p.string.strip().endswith("(") and n.string.strip().startswith(")"):
+            nt = ej.new_tag("span")
+            nt.string = s.string.strip()
+            nt.attrs["class"]="dificultad"
+            s.replace_with(nt)
+
     with open("out/ej/"+h[4:], "w") as file:
-        ej = re_trim.sub("</p>",str(ej))
+        ej = str(ej)
+        ej = re_difi2.sub("", ej)
         file.write(ej)

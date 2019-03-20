@@ -5,6 +5,7 @@ import bs4
 from glob import glob
 import sys
 import re
+
 #|Problemas para resolver
 re_remove = re.compile(r"^\s*(Ejercicios para practicar|Actividades para pensar más|Encuentra el error)\s*$")
 re_difi1 = re.compile(r'^\s*[●○]{3}\s*$')

@@ -13,7 +13,7 @@ Por el momento este script solo se ha usado para la asignatura de
 matemáticas y por ello incluye la librería `MathJax.js` que probablemente
 sobrara para otras asignaturas.
 
-Para ejecutar el script primero ha de escribirse un fichero `config.yml`
+Para ejecutar el script `sm.py` primero ha de escribirse un fichero `config.yml`
 como el siguiente ejemplo:
 
 ```yaml
@@ -41,7 +41,7 @@ La salida del script sera generada en el directorio `out`.
 Ejemplo de ejecución:
 
 ```console
-$ python3 sm.py 
+$ python3 sm.py
 1 BACH Matemáticas aplicadas a las Ciencias Sociales I
    1 - Números reales
    2 - Matemática financiera
@@ -137,3 +137,7 @@ ESO_2.03_-_Potencias_y_raíces.html                      ESO_3.09_-_Cuerpos_geom
 ESO_2.04_-_Proporcionalidad.html                        ESO_3.10_-_Sucesiones.html                              m
 ESO_2.05_-_Expresiones_algebraicas.html                 ESO_3.11_-_Funciones.html
 ```
+
+## Bonus: Fichas de Ejercicios
+
+Con el `script` `ej.py` se generan en la carpeta `ej` unos `html` que solo contienen los ejercicios de cada tema y que permite editarlos y seleccionarlos para generar fácilmente fichas de ejercicios destinadas a los alumnos.

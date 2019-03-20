@@ -1,21 +1,24 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import bs4
-from glob import glob
-import sys
 import re
+from glob import glob
 
-#|Problemas para resolver
-re_remove = re.compile(r"^\s*(Ejercicios para practicar|Actividades para pensar más|Encuentra el error)\s*$")
+import bs4
+
+# |Problemas para resolver
+re_remove = re.compile(
+    r"^\s*(Ejercicios para practicar|Actividades para pensar más|Encuentra el error)\s*$")
 re_difi1 = re.compile(r'^\s*[●○]{3}\s*$')
 re_difi2 = re.compile(r'\(\s*<span class="dificultad">[●○]{3}</span>\s*\)')
 heads = ["h1", "h2", "h3", "h5", "h6"]
+
 
 def get_soup(h):
     with open(h, "r") as f:
         soup = bs4.BeautifulSoup(f, "lxml")
         return soup
+
 
 def add_class(n, cl):
     c = n.attrs.get("class", "")
@@ -23,7 +26,8 @@ def add_class(n, cl):
         c = (c + " "+cl).strip()
     else:
         c.append(cl)
-    n.attrs["class"]=c
+    n.attrs["class"] = c
+
 
 def get_tpt(title):
     soup = bs4.BeautifulSoup('''
@@ -68,13 +72,13 @@ def get_tpt(title):
         </div>
 	</body>
 </html>
-	'''.strip() % (title)
-        , 'lxml')
+	'''.strip() % (title), 'lxml')
     return soup
+
 
 for h in sorted(glob("out/*_-_*.html")):
     print(h)
-    soup=get_soup(h)
+    soup = get_soup(h)
     title = soup.find("title").get_text().strip()
     ej = get_tpt(title+" - Ejercicios")
     body = ej.findAll("div")[-1]
@@ -93,7 +97,7 @@ for h in sorted(glob("out/*_-_*.html")):
             if cap == "Actividades":
                 h1.extract()
                 for h3 in div.findAll("h3"):
-                    h3.name="h1"
+                    h3.name = "h1"
             body.append(div)
         else:
             for a in div.select("div.actividades"):
@@ -103,7 +107,7 @@ for h in sorted(glob("out/*_-_*.html")):
         if e.find("a"):
             e.extract()
     for i in body.findAll(heads):
-        if len(i.get_text().strip())==0:
+        if len(i.get_text().strip()) == 0:
             i.extract()
         else:
             add_class(i, "phide")
@@ -113,7 +117,7 @@ for h in sorted(glob("out/*_-_*.html")):
 
     for e in body.select("div.exercise"):
         n = e.select("div.sm-exercise-number")[0]
-        n.attrs["contenteditable"]="false"
+        n.attrs["contenteditable"] = "false"
         n = n.get_text().strip()
         add_class(e, "e"+n)
 
@@ -125,7 +129,7 @@ for h in sorted(glob("out/*_-_*.html")):
         if p.string.strip().endswith("(") and n.string.strip().startswith(")"):
             nt = ej.new_tag("span")
             nt.string = s.string.strip()
-            nt.attrs["class"]="dificultad"
+            nt.attrs["class"] = "dificultad"
             s.replace_with(nt)
 
     with open("out/ej/"+h[4:], "w") as file:

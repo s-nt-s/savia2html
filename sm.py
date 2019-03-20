@@ -128,8 +128,7 @@ def get_tpt(title):
     </div>
 	</body>
 </html>
-	'''.strip() % (title)
-        , 'lxml')
+	'''.strip() % (title), 'lxml')
     return soup
 
 
@@ -185,6 +184,7 @@ def get_curso(titulo):
     curso = "%s_%s." % (tit[1], tit[0][0])
     return curso
 
+
 r = s.get(config['url'])
 soup = bs4.BeautifulSoup(r.content, "lxml")
 form = soup.find("form", attrs={"id": config["form"]})
@@ -207,7 +207,7 @@ for url in urls:
     lib = get_text(soup, "h2.tit")
     lib = re.sub(r"\s*\. Savia$", "", lib)
     curso = get_curso(lib)
-    print (lib)
+    print(lib)
     #tpt = get_tpt(lib)
     #body = tpt.find("body").find("div").find("div")
     css = []
@@ -221,7 +221,7 @@ for url in urls:
         flt = curso + ("%02d" % int(num))
         f_out = flt + " - " + tit
         med = "m/" + flt + "/"
-        print ("  %2d - %s" % (int(num), tit))
+        print("  %2d - %s" % (int(num), tit))
         m = re_piecesindex.search(r.text)
         piecesindex = m.group(1)
         if piecesindex.endswith(";"):

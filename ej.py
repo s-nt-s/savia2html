@@ -31,7 +31,6 @@ def get_tpt(title):
 	<head>
 		<title>%s</title>
 		<meta charset="utf-8"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script type="text/javascript" async src="../m/MathJax-2.7.2/MathJax.js?config=TeX-AMS_CHTML"></script>
         <script type="text/x-mathjax-config">
           MathJax.Hub.Config({

@@ -9,6 +9,8 @@ from urllib.parse import urljoin, urlparse
 import bs4
 import requests
 import yaml
+import filecmp
+from glob import glob
 
 tab = re.compile("^", re.MULTILINE)
 sp = re.compile("\s+", re.UNICODE)
@@ -35,7 +37,10 @@ s = requests.Session()
 s.headers = {
     'User-Agent': "Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"}
 
-contadores = {}
+contadores = {
+    "_css": {}
+}
+url_file = {}
 
 
 def get(url):
@@ -44,40 +49,65 @@ def get(url):
     return soup, r
 
 
-def dwn(url, out, ext=None, ab=None):
+def dwn(url, flt, ext=None, ab=None):
     global contadores
+    global url_file
+
     if ab:
         url = urljoin(ab, url)
+
+    if url in url_file:
+        return url_file[url]
+
     if not ext:
         path = urlparse(url).path
         ext = os.path.splitext(path)[1]
-    if out not in contadores:
-        contadores[out] = {}
-    if ext not in contadores[out]:
-        contadores[out][ext] = 1
-    dest = out + ("%02d" % contadores[out][ext]) + ext
+    if ext not in contadores:
+        contadores[ext] = 1
+
+    rec = "m/rec/"
+    if ext != ".css":
+        rec = rec +ext[1:]+"/"
+
+    if not os.path.isdir("out/"+rec):
+        os.mkdir("out/"+rec)
+
+    pad = 2
+    if ext == ".png":
+        pad = 3
+    elif ext == ".jpg":
+        pad = 4
+    dest = rec + (("%0"+str(pad)+"d") % contadores[ext]) + ext
     resp = s.get(url)
     text = None
     if ext == ".css":
-        if "css" not in contadores[out]:
-            contadores[out]["css"] = []
-        if resp.text in contadores[out]["css"]:
+        if flt not in contadores["_css"]:
+            contadores["_css"][flt] = []
+        if resp.text in contadores["_css"][flt]:
             return None
-        contadores[out]["css"].append(resp.text)
+        contadores["_css"][flt].append(resp.text)
         text = resp.text
         for m in re_css_url.findall(text):
             if len(m) > 3:
-                dest2 = dwn(m, out, ab=url)
-                text = text.replace(m, dest2.split("/")[-1])
+                dest2 = dwn(m, flt, ab=url)
+                text = text.replace(m, dest2[6:])
         if text == resp.text:
             text = None
-    with open("out/" + dest, 'wb') as fd:
+    _dest = "out/" + dest
+    with open(_dest, 'wb') as fd:
         if text:
             fd.write(text.encode())
         else:
             fd.write(resp.content)
         fd.close()
-    contadores[out][ext] = 1 + contadores[out][ext]
+    for dst in glob("out/"+rec+"*"+ext):
+        if dst != _dest and filecmp.cmp(dst, _dest):
+            dst = dst[4:]
+            os.remove(_dest)
+            url_file[url] = dst
+            return dst
+    contadores[ext] = 1 + contadores[ext]
+    url_file[url] = dest
     return dest
 
 
@@ -220,7 +250,6 @@ for url in urls:
         tit = get_text(soup, "div.txt-content2-tit")
         flt = curso + ("%02d" % int(num))
         f_out = flt + " - " + tit
-        med = "m/" + flt + "/"
         print("  %2d - %s" % (int(num), tit))
         m = re_piecesindex.search(r.text)
         piecesindex = m.group(1)
@@ -276,8 +305,6 @@ for url in urls:
         if len(body.select("> *")) == 0:
             continue
 
-        if not os.path.exists("out/" + med):
-            os.makedirs("out/" + med)
 
         # css = { for c in list(set(css))}
         for c in css:
@@ -318,7 +345,7 @@ for url in urls:
         for l in tpt.select("link"):
             link = l.attrs["href"]
             if link.startswith("http"):
-                dest = dwn(link, med)
+                dest = dwn(link, flt)
                 if dest:
                     l.attrs["href"] = dest
                 else:
@@ -327,13 +354,13 @@ for url in urls:
         for img in tpt.findAll(["img"]):  # , "script"]):
             link = img.attrs.get("src", None)
             if link and link.startswith("http"):
-                dest = dwn(link, med)
+                dest = dwn(link, flt)
                 img.attrs["src"] = dest
 
         for l in tpt.select("a"):
             link = l.attrs["href"]
             if link and link.startswith("http") and "/sm_ofimatico/" in link:
-                dest = dwn(link, med, ext=".pdf")
+                dest = dwn(link, flt, ext=".pdf")
                 l.attrs["href"] = dest
 
         html = get_html(tpt)

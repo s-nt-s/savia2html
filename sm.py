@@ -11,6 +11,7 @@ import requests
 import yaml
 import filecmp
 from glob import glob
+import sys
 
 tab = re.compile("^", re.MULTILINE)
 sp = re.compile("\s+", re.UNICODE)
@@ -29,6 +30,9 @@ re_userid = re.compile(r"\bvar\s*userid\s*=\s*'(\d+)'\s*;?")
 heads = ["h1", "h2", "h3", "h4", "h5", "h6"]
 block = heads + ["p", "div", "table", "article"]
 inline = ["span", "strong", "b", "del"]
+
+if not os.path.isfile("config.yml"):
+    sys.exit("No existe el fichero de configuración config.yml")
 
 with open("config.yml", 'r') as stream:
     config = yaml.load(stream)

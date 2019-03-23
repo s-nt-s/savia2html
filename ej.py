@@ -2,9 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import re
+import os
 from glob import glob
 
 import bs4
+
+if not os.path.exists("out/ej"):
+    os.mkdir("out/ej")
 
 # |Problemas para resolver
 re_remove = re.compile(

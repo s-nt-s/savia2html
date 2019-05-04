@@ -1,17 +1,17 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import filecmp
 import json
 import os
 import re
+import sys
+from glob import glob
 from urllib.parse import urljoin, urlparse
 
 import bs4
 import requests
 import yaml
-import filecmp
-from glob import glob
-import sys
 
 tab = re.compile("^", re.MULTILINE)
 sp = re.compile("\s+", re.UNICODE)
@@ -71,7 +71,7 @@ def dwn(url, flt, ext=None, ab=None):
 
     rec = "m/rec/"
     if ext != ".css":
-        rec = rec +ext[1:]+"/"
+        rec = rec + ext[1:]+"/"
 
     if not os.path.isdir("out/"+rec):
         os.mkdir("out/"+rec)
@@ -308,7 +308,6 @@ for url in urls:
 
         if len(body.select("> *")) == 0:
             continue
-
 
         # css = { for c in list(set(css))}
         for c in css:

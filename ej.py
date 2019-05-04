@@ -1,8 +1,8 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import re
 import os
+import re
 from glob import glob
 
 import bs4

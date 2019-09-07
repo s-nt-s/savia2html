@@ -306,7 +306,7 @@ for url in urls:
             jss = [script.attrs["src"]
                    for script in soup.select("script") if script.get("src", None)]
 
-        if len(body.select("> *")) == 0:
+        if len(body.select(":scope > *")) == 0:
             continue
 
         # css = { for c in list(set(css))}

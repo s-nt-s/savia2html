@@ -35,7 +35,7 @@ if not os.path.isfile("config.yml"):
     sys.exit("No existe el fichero de configuración config.yml")
 
 with open("config.yml", 'r') as stream:
-    config = yaml.load(stream)
+    config = yaml.load(stream, Loader=yaml.FullLoader)
 
 s = requests.Session()
 s.headers = {

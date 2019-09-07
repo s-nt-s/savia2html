@@ -31,11 +31,17 @@ heads = ["h1", "h2", "h3", "h4", "h5", "h6"]
 block = heads + ["p", "div", "table", "article"]
 inline = ["span", "strong", "b", "del"]
 
-if not os.path.isfile("config.yml"):
-    sys.exit("No existe el fichero de configuración config.yml")
+def get_yml(path, error=None):
+    if not os.path.isfile(path):
+        if error:
+            sys.exit(error)
+        return {}
+    with open(path, 'r') as stream:
+        return yaml.load(stream, Loader=yaml.FullLoader)
 
-with open("config.yml", 'r') as stream:
-    config = yaml.load(stream, Loader=yaml.FullLoader)
+config = get_yml("config.yml", error="No existe el fichero de configuración config.yml")
+cursos = get_yml("cursos.yml")
+cursos = {v.strip():k.strip() for k, v in cursos.items()}
 
 s = requests.Session()
 s.headers = {
@@ -213,9 +219,14 @@ def get_html(soup):
 
 
 def get_curso(titulo):
+    if titulo in cursos:
+        return cursos[titulo]
     tit = titulo.split(" ")
-    cap = titulo.split(" ")
-    curso = "%s_%s." % (tit[1], tit[0][0])
+    curso = "%s_%s" % (tit[1], tit[0][0])
+    if titulo.endswith(" académicas"):
+        curso = curso + "_acad"
+    elif titulo.endswith(" aplicadas"):
+        curso = curso + "_apli"
     return curso
 
 
@@ -241,7 +252,7 @@ for url in urls:
     lib = get_text(soup, "h2.tit")
     lib = re.sub(r"\s*\. Savia$", "", lib)
     curso = get_curso(lib)
-    print(lib)
+    print(curso, "<--", lib)
     #tpt = get_tpt(lib)
     #body = tpt.find("body").find("div").find("div")
     css = []
@@ -252,7 +263,7 @@ for url in urls:
         soup, r = get(url2)
         num = get_text(soup, "div.num")
         tit = get_text(soup, "div.txt-content2-tit")
-        flt = curso + ("%02d" % int(num))
+        flt = curso + (".%02d" % int(num))
         f_out = flt + " - " + tit
         print("  %2d - %s" % (int(num), tit))
         m = re_piecesindex.search(r.text)
